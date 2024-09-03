@@ -2,6 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import { connectToDatabase } from "./infrastructure/database/connectToDatabase";
+import { authRouter } from "./interface/routes/authRoutes";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpecs } from "./swaggerConfig";
 
 
 
@@ -9,11 +12,15 @@ import { connectToDatabase } from "./infrastructure/database/connectToDatabase";
 
 const server = express();
 
+// setting up swagger-ui
+server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
 // middlewares
 server.use(express.json());
 
 
 // routes
+server.use("/api/v1/auth",authRouter)
 
 
 // error handling middlware
