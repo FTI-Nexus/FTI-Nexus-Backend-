@@ -1,16 +1,28 @@
 import { UserAcccount, UserAccountRepository } from "../../domain/auth/userAccount";
 import { UserAccountSchema } from "../database/userAccountSchema";
 
-export class UserAccountRepositoryImp implements UserAccountRepository {
-  userId: string;
 
-  constructor(userId: string) {
+export class UserAccountRepositoryImp implements UserAccountRepository {
+  userId: string | null;
+
+  constructor(userId: string | null) {
     this.userId = userId;
   }
 
-  async createAccount(accountInfo:UserAcccount): Promise<void>{
-    await UserAccountSchema.create(accountInfo)
+  async createAccount(accountInfo: UserAcccount): Promise<void> {
+    await UserAccountSchema.create(accountInfo);
   }
+  async findAccountByEmailAndPhone(dataToUseForSearch: { email: string; phone: string }): Promise<UserAcccount | null> {
+    return UserAccountSchema.findOne(dataToUseForSearch);
+  }
+
+  async findAccountByUsername(username: string): Promise<boolean> {
+    // this methods returns false if no account with the provided username exist and true if it does.
+    const account = await UserAccountSchema.findOne({ username: username });
+    if (account) return true;
+    return false;
+  }
+
   async updateEmail(newEmail: string): Promise<void> {
     await UserAccountSchema.findByIdAndUpdate(this.userId, { $set: { email: newEmail } });
   }

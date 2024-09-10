@@ -20,6 +20,20 @@ class UserAccountRepositoryImp {
             yield userAccountSchema_1.UserAccountSchema.create(accountInfo);
         });
     }
+    findAccountByEmailAndPhone(dataToUseForSearch) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return userAccountSchema_1.UserAccountSchema.findOne(dataToUseForSearch);
+        });
+    }
+    findAccountByUsername(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // this methods returns false if no account with the provided username exist and true if it does.
+            const account = yield userAccountSchema_1.UserAccountSchema.findOne({ username: username });
+            if (account)
+                return true;
+            return false;
+        });
+    }
     updateEmail(newEmail) {
         return __awaiter(this, void 0, void 0, function* () {
             yield userAccountSchema_1.UserAccountSchema.findByIdAndUpdate(this.userId, { $set: { email: newEmail } });

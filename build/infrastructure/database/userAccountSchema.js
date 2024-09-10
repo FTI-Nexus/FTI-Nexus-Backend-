@@ -9,24 +9,29 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const userAccountSchema = new mongoose_1.default.Schema({
     accountType: {
         type: String,
-        enum: ["trader", "investor"],
-        required: true,
+        enum: { values: ["trader", "investor"], message: `{VALUE} is not a valid value for accountType.Valid values= trader investor` },
+        required: [true, "No data passed for accountType"],
     },
     firstName: {
         type: String,
-        required: true,
+        required: [true, "No data passed for firtName"],
+        match: [/^[a-zA-Z-]+$/, "firstName value invalid. firstName must be a string and must not contain space"],
     },
     lastName: {
         type: String,
-        required: true,
+        minlength: [2, "lastName must be at least 2 characters"],
+        required: [true, "No data passed for lastName"],
+        match: [/^(?!.*[ -]{2})[a-zA-Z]+(?:[ -][a-zA-Z]+)*$/, "lastName value invalid. lastName must be a string and must not cotain leading or trailing spaces"],
     },
     email: {
         type: String,
-        required: true,
+        required: [true, "No data passed for email"],
+        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "email value is invalid. email must be in the form username@domain.com and must not contain any space"],
     },
     phone: {
         type: String,
-        required: true,
+        required: [true, "No data passed for phone"],
+        match: [/^\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/, "phone value is invalid."],
     },
     password: {
         type: String,
@@ -34,19 +39,22 @@ const userAccountSchema = new mongoose_1.default.Schema({
     },
     username: {
         type: String,
-        required: true,
+        required: [true, "No data passed for username"],
     },
     dateOfBirth: {
         type: String,
-        required: true,
+        required: [true, "No data passed for dateOfBirth"],
+        match: [/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, "dateOfBirth value invalid. dateOfBirth must be in this form yyyy-mm-dd"],
     },
     gender: {
         type: String,
-        required: true,
+        enum: { values: ["male", "female", "trans"], message: `{VALUE} is not a valid value for gender for this system.Valid values= male female tans` },
+        required: [true, "No data passed for gender"],
     },
-    citizenshipStatus: {
+    countryOfOrigin: {
         type: String,
-        required: true,
+        required: [true, "No data passed for countryOfOrigin"],
+        match: [/^[A-Za-z]+$/, "countryOfOrigin value invalid. countryOfOrigin must be a string and must not contain any space"],
     },
     mediumOfCommu: {
         type: String,
