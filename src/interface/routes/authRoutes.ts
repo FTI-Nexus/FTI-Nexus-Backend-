@@ -7,4 +7,4 @@ export const authRouter=Router()
 
 
 // auth routes
-authRouter.post("/signup/:accountType",signupController)
+authRouter.post("/signup",signupController)

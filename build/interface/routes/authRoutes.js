@@ -5,4 +5,4 @@ const express_1 = require("express");
 const authControllers_1 = require("../controllers/authControllers");
 exports.authRouter = (0, express_1.Router)();
 // auth routes
-exports.authRouter.post("/signup/:accountType", authControllers_1.signupController);
+exports.authRouter.post("/signup", authControllers_1.signupController);
