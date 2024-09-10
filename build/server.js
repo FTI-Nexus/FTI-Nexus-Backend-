@@ -19,6 +19,7 @@ const connectToDatabase_1 = require("./infrastructure/database/connectToDatabase
 const authRoutes_1 = require("./interface/routes/authRoutes");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swaggerConfig_1 = require("./swaggerConfig");
+const errorHandler_1 = require("./interface/middlewares/errorHandler");
 const server = (0, express_1.default)();
 // setting up swagger-ui
 server.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerConfig_1.swaggerSpecs));
@@ -27,6 +28,7 @@ server.use(express_1.default.json());
 // routes
 server.use("/api/v1/auth", authRoutes_1.authRouter);
 // error handling middlware
+server.use(errorHandler_1.errorHandler);
 const port = process.env.PORT ? process.env.PORT : 8000;
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

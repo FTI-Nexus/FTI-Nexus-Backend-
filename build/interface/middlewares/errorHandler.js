@@ -12,12 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = void 0;
 const AppError_1 = require("../../domain/errors/AppError");
 const mongoose_1 = require("mongoose");
-const errorHandler = (err, req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const errorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (err instanceof AppError_1.AppError) {
         res.status(err.statusCode).json({ error: err.message });
     }
     else if (err instanceof mongoose_1.Error.ValidationError) {
-        res.status(400).json({ error: err.message.split(":")[1] });
+        const errorCollection = err.message.split(":");
+        res.status(400).json({ error: (errorCollection[2]).split(",")[0] });
     }
     else {
         res.status(500).json({ error: "Server Error" });

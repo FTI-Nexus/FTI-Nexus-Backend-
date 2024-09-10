@@ -8,8 +8,8 @@ export interface UserAcccount {
   password: string;
   username: string;
   dateOfBirth: string;
-  gender: string;
-  citizenshipStatus: string;
+  gender: "male"|"female"|"trans";
+  countryOfOrigin: string;
   mediumOfCommu: "email" | "phone";
   verfCode: number;
   isAccountVerified: boolean;
@@ -17,8 +17,11 @@ export interface UserAcccount {
   profile: string;
 }
 
+
 export interface UserAccountRepository {
   createAccount(accountInfo: UserAcccount): Promise<void>;
+  findAccountByEmailAndPhone(dataToUseForSearch: {email:string,phone:string}): Promise<UserAcccount | null>;
+  findAccountByUsername(username:string):Promise<boolean>
   updateEmail(newEmail: string): Promise<void>;
   updatePhone(newPhone: string): Promise<void>;
   updatePassword(newPassword: string): Promise<void>;

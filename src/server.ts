@@ -5,6 +5,7 @@ import { connectToDatabase } from "./infrastructure/database/connectToDatabase";
 import { authRouter } from "./interface/routes/authRoutes";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpecs } from "./swaggerConfig";
+import { errorHandler } from "./interface/middlewares/errorHandler";
 
 
 
@@ -24,7 +25,7 @@ server.use("/api/v1/auth",authRouter)
 
 
 // error handling middlware
-
+server.use(errorHandler)
 
 const port = process.env.PORT ? process.env.PORT : 8000;
 

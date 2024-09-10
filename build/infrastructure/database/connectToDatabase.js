@@ -35,4 +35,3 @@ const tObjectId = (id) => {
     return new mongoose_1.default.Types.ObjectId(id);
 };
 exports.tObjectId = tObjectId;
-// exports = { connectToDatabase, tObjectId };
