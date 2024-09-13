@@ -12,7 +12,6 @@ import { errorHandler } from "./interface/middlewares/errorHandler";
 
 
 const server = express();
-
 // setting up swagger-ui
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 

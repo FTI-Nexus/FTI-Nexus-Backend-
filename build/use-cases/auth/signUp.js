@@ -48,12 +48,7 @@ const generateUserName = (firstName, lastName, accontRepo) => __awaiter(void 0, 
     }
     return userName;
 });
-const signUp = (accountInfo) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Use Case:SignUp executed");
-    const userAccountRepo = new userAccountRepository_1.UserAccountRepositoryImp(null);
-    // check if account already exists using email and phone number
-    console.log("Checking if account already exist...");
-    const account = yield userAccountRepo.findAccountByEmailAndPhone({ email: accountInfo.email, phone: accountInfo.phone });
+const checkAccountExistence = (account) => {
     if (account) {
         console.log("Account already exist");
         if (!account.isAccountVerified)
@@ -62,6 +57,16 @@ const signUp = (accountInfo) => __awaiter(void 0, void 0, void 0, function* () {
             throw new AppError_1.AppError("Account already exist,KYC required", 409);
         throw new AppError_1.AppError("Account already exist", 409);
     }
+};
+const signUp = (accountInfo) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Use Case:SignUp executed");
+    const userAccountRepo = new userAccountRepository_1.UserAccountRepositoryImp(null);
+    // check if account already exists using email and phone number
+    console.log("Checking if account already exist...");
+    let account = yield userAccountRepo.findAccountByEmail(accountInfo.email);
+    checkAccountExistence(account);
+    account = yield userAccountRepo.findAccountByPhone(accountInfo.phone);
+    checkAccountExistence(account);
     //  generating username for account
     console.log("Generating username...");
     accountInfo.username = yield generateUserName(accountInfo.firstName, accountInfo.lastName, userAccountRepo);

@@ -20,9 +20,14 @@ class UserAccountRepositoryImp {
             yield userAccountSchema_1.UserAccountSchema.create(accountInfo);
         });
     }
-    findAccountByEmailAndPhone(dataToUseForSearch) {
+    findAccountByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            return userAccountSchema_1.UserAccountSchema.findOne(dataToUseForSearch);
+            return yield userAccountSchema_1.UserAccountSchema.findOne({ email });
+        });
+    }
+    findAccountByPhone(phone) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield userAccountSchema_1.UserAccountSchema.findOne({ phone });
         });
     }
     findAccountByUsername(username) {

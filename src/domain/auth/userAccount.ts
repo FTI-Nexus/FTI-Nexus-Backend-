@@ -20,8 +20,9 @@ export interface UserAcccount {
 
 export interface UserAccountRepository {
   createAccount(accountInfo: UserAcccount): Promise<void>;
-  findAccountByEmailAndPhone(dataToUseForSearch: {email:string,phone:string}): Promise<UserAcccount | null>;
-  findAccountByUsername(username:string):Promise<boolean>
+  findAccountByEmail(phone: string): Promise<UserAcccount | null>;
+  findAccountByPhone(phone: string): Promise<UserAcccount | null>;
+  findAccountByUsername(username: string): Promise<boolean>;
   updateEmail(newEmail: string): Promise<void>;
   updatePhone(newPhone: string): Promise<void>;
   updatePassword(newPassword: string): Promise<void>;

@@ -12,8 +12,12 @@ export class UserAccountRepositoryImp implements UserAccountRepository {
   async createAccount(accountInfo: UserAcccount): Promise<void> {
     await UserAccountSchema.create(accountInfo);
   }
-  async findAccountByEmailAndPhone(dataToUseForSearch: { email: string; phone: string }): Promise<UserAcccount | null> {
-    return UserAccountSchema.findOne(dataToUseForSearch);
+  async findAccountByEmail(email:string): Promise<UserAcccount | null> {
+    return await UserAccountSchema.findOne({email});
+  }
+
+  async findAccountByPhone(phone:string): Promise<UserAcccount | null> {
+    return await UserAccountSchema.findOne({phone});
   }
 
   async findAccountByUsername(username: string): Promise<boolean> {
