@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 dotenv.config();
 import mongoose from "mongoose";
 import { UserAcccount } from "../../domain/auth/userAccount";
+import {getName} from "country-list"
 
 // Database structure for documents in UserAccounts Collection
 const userAccountSchema = new mongoose.Schema<UserAcccount>({
@@ -53,6 +54,12 @@ const userAccountSchema = new mongoose.Schema<UserAcccount>({
     type: String,
     required: [true, "No data passed for countryOfOrigin"],
     match: [/^[A-Za-z]+$/, "countryOfOrigin value invalid. countryOfOrigin must be a string and must not contain any space"],
+    validate: {
+      validator: function (value:string) {
+        return getName(value)!==undefined;
+      },
+      message: "Value passed of countryOfOrigin is not a country's ISO code",
+    },
   },
   mediumOfCommu: {
     type: String,

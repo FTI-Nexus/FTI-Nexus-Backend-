@@ -7,6 +7,7 @@ exports.UserAccountSchema = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const mongoose_1 = __importDefault(require("mongoose"));
+const country_list_1 = require("country-list");
 // Database structure for documents in UserAccounts Collection
 const userAccountSchema = new mongoose_1.default.Schema({
     accountType: {
@@ -57,6 +58,12 @@ const userAccountSchema = new mongoose_1.default.Schema({
         type: String,
         required: [true, "No data passed for countryOfOrigin"],
         match: [/^[A-Za-z]+$/, "countryOfOrigin value invalid. countryOfOrigin must be a string and must not contain any space"],
+        validate: {
+            validator: function (value) {
+                return (0, country_list_1.getName)(value) !== undefined;
+            },
+            message: "Value passed of countryOfOrigin is not a country's ISO code",
+        },
     },
     mediumOfCommu: {
         type: String,
