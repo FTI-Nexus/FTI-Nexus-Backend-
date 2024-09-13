@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserAccountSchema = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const mongoose_1 = __importDefault(require("mongoose"));
 // Database structure for documents in UserAccounts Collection
 const userAccountSchema = new mongoose_1.default.Schema({
@@ -74,7 +76,7 @@ const userAccountSchema = new mongoose_1.default.Schema({
     },
     profile: {
         type: String,
-        default: "/defaultProfile.png",
+        default: `${process.env.BaseUrl}/defaultProfile.png`,
     },
 });
 exports.UserAccountSchema = mongoose_1.default.model("UserAcccount", userAccountSchema);

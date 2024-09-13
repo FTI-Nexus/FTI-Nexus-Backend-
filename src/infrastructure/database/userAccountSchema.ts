@@ -1,3 +1,5 @@
+import dotenv from "dotenv"
+dotenv.config();
 import mongoose from "mongoose";
 import { UserAcccount } from "../../domain/auth/userAccount";
 
@@ -70,7 +72,7 @@ const userAccountSchema = new mongoose.Schema<UserAcccount>({
   },
   profile: {
     type: String,
-    default: "/defaultProfile.png",
+    default: `${process.env.BaseUrl}/defaultProfile.png`,
   },
 });
 
