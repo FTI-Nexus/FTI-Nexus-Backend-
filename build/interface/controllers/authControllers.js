@@ -19,8 +19,8 @@ const signUp_1 = require("../../use-cases/auth/signUp");
 exports.signupController = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("An account is been created..");
     const accountInfo = req.body;
-    if (!accountInfo.email || !accountInfo.phone || !accountInfo.password)
-        throw new AppError_1.AppError(`No data passed for ${!accountInfo.email ? "email" : !accountInfo.password ? "password" : "phone"} field in the request body`, 400);
+    if (!accountInfo.email || !accountInfo.phone)
+        throw new AppError_1.AppError(`No data passed for ${!accountInfo.email ? "email" : "phone"} field in the request body`, 400);
     else if ((!accountInfo.lastName || !accountInfo.firstName) || accountInfo.lastName.length < 2)
         throw new AppError_1.AppError(`${!accountInfo.lastName || !accountInfo.firstName ? "No data passed for either lastName or firstName field in the request body" : "the length of lastName cannot be 1"}`, 400);
     yield (0, signUp_1.signUp)(accountInfo);

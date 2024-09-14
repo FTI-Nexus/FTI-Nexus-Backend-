@@ -7,8 +7,8 @@ import { signUp } from "../../use-cases/auth/signUp";
 export const signupController = asyncHandler(async (req: Request, res: Response) => {
   console.log("An account is been created..");
   const accountInfo: UserAcccount = req.body;
-  if (!accountInfo.email || !accountInfo.phone || !accountInfo.password)
-    throw new AppError(`No data passed for ${!accountInfo.email ? "email" : !accountInfo.password ? "password" : "phone"} field in the request body`, 400);
+  if (!accountInfo.email || !accountInfo.phone)
+    throw new AppError(`No data passed for ${!accountInfo.email ? "email":"phone"} field in the request body`, 400);
   else if ((!accountInfo.lastName || !accountInfo.firstName) || accountInfo.lastName.length < 2)
     throw new AppError(`${!accountInfo.lastName || !accountInfo.firstName ? "No data passed for either lastName or firstName field in the request body" : "the length of lastName cannot be 1"}`, 400);
   await signUp(accountInfo);
