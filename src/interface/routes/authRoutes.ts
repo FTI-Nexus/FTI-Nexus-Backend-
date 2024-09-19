@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { signupController } from "../controllers/authControllers";
+import { googleOAuthController, oAuthController, signupController } from "../controllers/authControllers";
 
 
 
@@ -110,3 +110,10 @@ export const authRouter=Router()
  */
 // auth routes
 authRouter.post("/signup",signupController)
+
+// url for redirecting to third party auth page
+authRouter.get("/signup/:oAuthType", oAuthController);
+
+
+// callback url for google after recieving consent from the user.
+authRouter.get("/google-signup",googleOAuthController)

@@ -108,3 +108,7 @@ exports.authRouter = (0, express_1.Router)();
  */
 // auth routes
 exports.authRouter.post("/signup", authControllers_1.signupController);
+// url for redirecting to third party auth page
+exports.authRouter.get("/signup/:oAuthType", authControllers_1.oAuthController);
+// callback url for google after recieving consent from the user.
+exports.authRouter.get("/google-signup", authControllers_1.googleOAuthController);
