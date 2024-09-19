@@ -30,7 +30,8 @@ export const googleSignUp = async (authCode: string) => {
 
   // use access token to get user account info
   const { names, emailAddresses, photos, phoneNumbers, birthdays, genders } = await getUserAccountFromGoogle(accessToken!);
-  console.log(`names=${(names[0]).givenName}`)  
-  const dateOfBirth = ""
+  const dateOfBirth = `${birthdays[0].date.year}-${(birthdays[0].date.month as string).length === 1 ? `0${birthdays[0].date.month}` : birthdays[0].date.month}-${
+    (birthdays[0].date.day as string).length === 1 ? `0${birthdays[0].date.day}` : birthdays[0].date.day
+  }`;
   return { firstName: names[0].givenName, lastName: names[0].familyName, email: emailAddresses[0].value, profile: photos[0].url, phone: phoneNumbers[0].value, gender: genders[0].value, dateOfBirth };
 };

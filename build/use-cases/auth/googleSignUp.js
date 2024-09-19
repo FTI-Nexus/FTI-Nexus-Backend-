@@ -42,8 +42,7 @@ const googleSignUp = (authCode) => __awaiter(void 0, void 0, void 0, function* (
     const accessToken = yield getAccessToken(authCode);
     // use access token to get user account info
     const { names, emailAddresses, photos, phoneNumbers, birthdays, genders } = yield getUserAccountFromGoogle(accessToken);
-    console.log(`names=${(names[0]).givenName}`);
-    const dateOfBirth = "";
+    const dateOfBirth = `${birthdays[0].date.year}-${birthdays[0].date.month.length === 1 ? `0${birthdays[0].date.month}` : birthdays[0].date.month}-${birthdays[0].date.day.length === 1 ? `0${birthdays[0].date.day}` : birthdays[0].date.day}`;
     return { firstName: names[0].givenName, lastName: names[0].familyName, email: emailAddresses[0].value, profile: photos[0].url, phone: phoneNumbers[0].value, gender: genders[0].value, dateOfBirth };
 });
 exports.googleSignUp = googleSignUp;
