@@ -35,6 +35,8 @@ export const googleOAuthController = asyncHandler(async (req: Request, res: Resp
   const { code, state, error } = req.query;
   if (!error || state != process.env.GoogleOAuthStateValue) throw new AppError(!error ? (error as string) : "Someone tempered with the requested data", 400);
 
+  console.log("A User is creating an account with google..")
+  console.log(`AuthCode=${code}`)
   const accountInfo = await googleSignUp(code as string);
   //  suppose to redirect to a page to collect the remaining data place the data gotten in the redirected url
   // the json response is for the mean time

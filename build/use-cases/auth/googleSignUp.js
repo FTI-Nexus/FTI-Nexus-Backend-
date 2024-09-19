@@ -19,6 +19,8 @@ const authControllers_1 = require("../../interface/controllers/authControllers")
 const getAccessToken = (authCode) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { tokens } = yield authControllers_1.oauth2Client.getToken(authCode);
+        console.log("Access token recieved");
+        console.log(`Token Credential=${tokens}`);
         return tokens.access_token;
     }
     catch (error) {
@@ -26,11 +28,14 @@ const getAccessToken = (authCode) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 const getUserAccountFromGoogle = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
-    const accountInfo = (yield (0, axios_1.default)({ method: "get", url: "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos,genders,birthdays,phoneNumbers", headers: { Authorization: `Bearer ${accessToken}` } })).data;
-    return accountInfo;
+    console.log("Getting user accountInfo");
+    const accountInfo = (yield (0, axios_1.default)({ method: "get", url: "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos,genders,birthdays,phoneNumbers", headers: { Authorization: `Bearer ${accessToken}` } }));
+    console.log(`Request status=${accountInfo.status}`);
+    return accountInfo.data;
 });
 const googleSignUp = (authCode) => __awaiter(void 0, void 0, void 0, function* () {
     // getting access token
+    console.log("Getting access token...");
     const accessToken = yield getAccessToken(authCode);
     console.log(accessToken);
     // use access token to get user account info
