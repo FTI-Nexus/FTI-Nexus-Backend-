@@ -30,7 +30,7 @@ export const googleSignUp = async (authCode: string) => {
 
   // use access token to get user account info
   const { names, emailAddresses, photos, phoneNumbers, birthdays, genders } = await getUserAccountFromGoogle(accessToken!);
-  console.log(`names=${names[0]}`)  
+  console.log(`names=${(names[0]).givenName}`)  
   const dateOfBirth = ""
   return { firstName: names[0].givenName, lastName: names[0].familyName, email: emailAddresses[0].value, profile: photos[0].url, phone: phoneNumbers[0].value, gender: genders[0].value, dateOfBirth };
 };
