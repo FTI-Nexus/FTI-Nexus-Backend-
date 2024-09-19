@@ -33,7 +33,7 @@ else throw new AppError("oAuthTpe parameter must have values like google,faceboo
 
 export const googleOAuthController = asyncHandler(async (req: Request, res: Response) => {
   const { code, state, error } = req.query;
-  if (!error || state != process.env.GoogleOAuthStateValue) throw new AppError(!error ? (error as string) : "Someone tempered with the requested data", 400);
+  if (error || state != process.env.GoogleOAuthStateValue) throw new AppError(!error ? (error as string) : "Someone tempered with the requested data", 400);
 
   console.log("A User is creating an account with google..")
   console.log(`AuthCode=${code}`)

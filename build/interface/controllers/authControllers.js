@@ -42,7 +42,7 @@ exports.oAuthController = (0, express_async_handler_1.default)((req, res) => __a
 }));
 exports.googleOAuthController = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { code, state, error } = req.query;
-    if (!error || state != process.env.GoogleOAuthStateValue)
+    if (error || state != process.env.GoogleOAuthStateValue)
         throw new AppError_1.AppError(!error ? error : "Someone tempered with the requested data", 400);
     console.log("A User is creating an account with google..");
     console.log(`AuthCode=${code}`);
