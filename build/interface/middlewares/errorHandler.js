@@ -21,6 +21,7 @@ const errorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, 
         res.status(400).json({ error: (errorCollection[2]).split(",")[0] });
     }
     else {
+        console.log(err.message);
         res.status(500).json({ error: "Server Error" });
     }
 });

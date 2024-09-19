@@ -9,6 +9,7 @@ export const errorHandler = async (err: Error, req: Request, res: Response,next:
     const errorCollection = err.message.split(":");
     res.status(400).json({ error: (errorCollection[2]).split(",")[0] });
   } else {
+    console.log(err.message)
     res.status(500).json({ error: "Server Error" });
   }
 };
