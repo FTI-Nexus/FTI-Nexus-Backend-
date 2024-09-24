@@ -18,7 +18,10 @@ const errorHandler = (err, req, res, next) => __awaiter(void 0, void 0, void 0, 
     }
     else if (err instanceof mongoose_1.Error.ValidationError) {
         const errorCollection = err.message.split(":");
-        res.status(400).json({ error: (errorCollection[2]).split(",")[0] });
+        res.status(400).json({ error: errorCollection[2].split(",")[0] });
+    }
+    else if (err instanceof SyntaxError) {
+        res.status(400).json({ error: err.message });
     }
     else {
         console.log(err.message);
