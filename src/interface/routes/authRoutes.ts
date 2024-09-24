@@ -183,7 +183,7 @@ authRouter.post("/login", loginController);
 authRouter.get("/signup/:oAuthType", signupOAuthController);
 
 // url for redirecting to third party auth page during login
-authRouter.get("login/:oAuthType",loginOAuthController)
+authRouter.get("/login/:oAuthType",loginOAuthController)
 
 // callback url for google after recieving consent from the user.
 authRouter.get("/google-signup", googleOAuthController);

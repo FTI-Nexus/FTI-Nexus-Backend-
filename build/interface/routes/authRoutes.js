@@ -181,6 +181,6 @@ exports.authRouter.post("/login", authControllers_1.loginController);
 // url for redirecting to third party auth page during signup
 exports.authRouter.get("/signup/:oAuthType", authControllers_1.signupOAuthController);
 // url for redirecting to third party auth page during login
-exports.authRouter.get("login/:oAuthType", authControllers_1.loginOAuthController);
+exports.authRouter.get("/login/:oAuthType", authControllers_1.loginOAuthController);
 // callback url for google after recieving consent from the user.
 exports.authRouter.get("/google-signup", authControllers_1.googleOAuthController);
