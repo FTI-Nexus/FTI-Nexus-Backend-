@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
 
 export interface UserAcccount {
+  _id:Types.ObjectId;
   accountType: "trader" | "investor";
   firstName: string;
   lastName: string;

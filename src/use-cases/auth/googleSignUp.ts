@@ -2,7 +2,7 @@ import axios from "axios";
 import { AppError } from "../../domain/errors/AppError";
 import { oauth2Client } from "../../interface/controllers/authControllers";
 
-const getAccessToken = async (authCode: string) => {
+export const getAccessToken = async (authCode: string) => {
   try {
     const { tokens } = await oauth2Client.getToken(authCode);
     console.log("Access token recieved");
@@ -12,11 +12,11 @@ const getAccessToken = async (authCode: string) => {
   }
 };
 
-const getUserAccountFromGoogle = async (accessToken: string) => {
+export const getUserAccountFromGoogle = async (accessToken: string,url:string|null=null) => {
   console.log("Getting user accountInfo");
   const accountInfo = await axios({
     method: "get",
-    url: "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos,genders,birthdays,phoneNumbers",
+    url: url ? url : "https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,photos,genders,birthdays,phoneNumbers",
     headers: { Authorization: `Bearer ${accessToken}` },
   });
   console.log(`Request status=${accountInfo.status}`);

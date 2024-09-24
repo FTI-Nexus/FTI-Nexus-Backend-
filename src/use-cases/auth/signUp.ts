@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { UserAcccount } from "../../domain/auth/userAccount";
 import { AppError } from "../../domain/errors/AppError";
 import { UserAccountRepositoryImp } from "../../infrastructure/repository/userAccountRepository";
+import { encryptPassword } from "../../libs/bcrypt";
 
 // helper methods
 function getRandomCharacters(str: string, numChars: number = 2): string {
@@ -68,7 +69,7 @@ export const signUp = async (accountInfo: UserAcccount) => {
 
   if (accountInfo.password) {
     console.log("Encrypting password..");
-    accountInfo.password = await bcrypt.hash(accountInfo.password, Number(process.env.PasswordEncrptRounds!));
+    accountInfo.password = await encryptPassword(accountInfo.password);
     console.log("Password encrypted");
   }
   await userAccountRepo.createAccount(accountInfo);

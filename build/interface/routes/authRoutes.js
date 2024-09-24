@@ -4,6 +4,7 @@ exports.authRouter = void 0;
 const express_1 = require("express");
 const authControllers_1 = require("../controllers/authControllers");
 exports.authRouter = (0, express_1.Router)();
+// auth routes
 /**
  * @swagger
  * /api/v1/auth/signup:
@@ -106,9 +107,80 @@ exports.authRouter = (0, express_1.Router)();
  *                   type: string
  *                   example: "Account already exist."
  */
-// auth routes
 exports.authRouter.post("/signup", authControllers_1.signupController);
-// url for redirecting to third party auth page
-exports.authRouter.get("/signup/:oAuthType", authControllers_1.oAuthController);
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     tags:
+ *       - Account
+ *     summary: Password Login
+ *     description: This is an endpoint for logging in with a password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "user@example.com"
+ *                 description: Email of the user (must be a valid email).
+ *               password:
+ *                 type: string
+ *                 example: "Password123"
+ *                 description: User's password.
+ *     responses:
+ *       200:
+ *         description: Login successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login successful."
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                   description: JWT token for accessing protected routes.
+ *       400:
+ *         description: Bad request. Missing or invalid fields.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No data passed for email or password"
+ *       401:
+ *         description: Unauthorized. Invalid credentials.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid email and password."
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No account with this email exist"
+ */
+exports.authRouter.post("/login", authControllers_1.loginController);
+// url for redirecting to third party auth page during signup
+exports.authRouter.get("/signup/:oAuthType", authControllers_1.signupOAuthController);
+// url for redirecting to third party auth page during login
+exports.authRouter.get("login/:oAuthType", authControllers_1.loginOAuthController);
 // callback url for google after recieving consent from the user.
 exports.authRouter.get("/google-signup", authControllers_1.googleOAuthController);

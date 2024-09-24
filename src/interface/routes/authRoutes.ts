@@ -1,11 +1,8 @@
 import { Router, Request, Response } from "express";
-import { googleOAuthController, oAuthController, signupController } from "../controllers/authControllers";
+import { googleOAuthController, loginController, loginOAuthController, signupController, signupOAuthController } from "../controllers/authControllers";
 
-
-
-export const authRouter=Router()
-
-
+export const authRouter = Router();
+// auth routes
 /**
  * @swagger
  * /api/v1/auth/signup:
@@ -108,12 +105,87 @@ export const authRouter=Router()
  *                   type: string
  *                   example: "Account already exist."
  */
-// auth routes
-authRouter.post("/signup",signupController)
+authRouter.post("/signup", signupController);
 
-// url for redirecting to third party auth page
-authRouter.get("/signup/:oAuthType", oAuthController);
 
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     tags:
+ *       - Account
+ *     summary: Password Login
+ *     description: This is an endpoint for logging in with a password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "user@example.com"
+ *                 description: Email of the user (must be a valid email).
+ *               password:
+ *                 type: string
+ *                 example: "Password123"
+ *                 description: User's password.
+ *     responses:
+ *       200:
+ *         description: Login successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login successful."
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                   description: JWT token for accessing protected routes.
+ *       400:
+ *         description: Bad request. Missing or invalid fields.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No data passed for email or password"
+ *       401:
+ *         description: Unauthorized. Invalid credentials.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid email and password."
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "No account with this email exist"
+ */
+authRouter.post("/login", loginController);
+
+// url for redirecting to third party auth page during signup
+authRouter.get("/signup/:oAuthType", signupOAuthController);
+
+// url for redirecting to third party auth page during login
+authRouter.get("login/:oAuthType",loginOAuthController)
 
 // callback url for google after recieving consent from the user.
-authRouter.get("/google-signup",googleOAuthController)
+authRouter.get("/google-signup", googleOAuthController);
+
+

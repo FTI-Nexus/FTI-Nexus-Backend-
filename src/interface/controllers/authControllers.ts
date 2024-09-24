@@ -8,6 +8,8 @@ import { signUp } from "../../use-cases/auth/signUp";
 import { googleSignUp } from "../../use-cases/auth/googleSignUp";
 import { google } from "googleapis";
 import { redirectToGoogleAuth } from "../../use-cases/auth/redirectToGoogleAuth";
+import { logIn } from "../../use-cases/auth/login";
+import { googleLogin } from "../../use-cases/auth/googleLogIn";
 
 export const oauth2Client = new google.auth.OAuth2(process.env.CLIENTID, process.env.CLIENTSECRET, `${process.env.BaseUrl}/api/v1/auth/google-signup`);
 
@@ -22,23 +24,42 @@ export const signupController = asyncHandler(async (req: Request, res: Response)
   res.status(201).json({ message: "Account created sucessfully" });
 });
 
+export const signupOAuthController = asyncHandler(async (req: Request, res: Response) => {
+  const { oAuthType } = req.params;
+  if (oAuthType === "google") redirectToGoogleAuth(res);
+  else throw new AppError("oAuthTpe parameter must have values like google,facebook", 400);
+});
 
+export const loginController = asyncHandler(async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  if (!email || !password) throw new AppError(!email ? "No data passed for email" : "No data passed for password", 400);
+  res.status(200).json({ message: "Login sucessful", token: await logIn({ email, password }) });
+});
 
-export const oAuthController=asyncHandler(async (req: Request, res: Response) =>{
-const {oAuthType}=req.params
-if(oAuthType==="google")  redirectToGoogleAuth(res);
-else throw new AppError("oAuthTpe parameter must have values like google,facebook",400)
-})
-
+export const loginOAuthController = asyncHandler(async (req: Request, res: Response) => {
+  const { oAuthType } = req.params;
+  if (oAuthType === "google") redirectToGoogleAuth(res, "login");
+  else throw new AppError("oAuthTpe parameter must have values like google,facebook", 400);
+});
 
 export const googleOAuthController = asyncHandler(async (req: Request, res: Response) => {
   const { code, state, error } = req.query;
-  if (error || state != process.env.GoogleOAuthStateValue) throw new AppError(!error ? (error as string) : "Someone tempered with the requested data", 400);
+  if (error) throw new AppError(error as string, 400);
 
-  console.log("A User is creating an account with google..")
-  console.log(`AuthCode=${code}`)
-  const accountInfo = await googleSignUp(code as string);
-  //  suppose to redirect to a page to collect the remaining data place the data gotten in the redirected url
-  // the json response is for the mean time
-  res.status(200).json({ accountInfo });
+  console.log("A User is creating an account with google..");
+  console.log(`AuthCode=${code}`);
+
+  if (state === process.env.GoogleOAuthStateValueForSignup) {
+    const accountInfo = await googleSignUp(code as string);
+    //  suppose to redirect to a page to collect the remaining data place the data gotten in the redirected url
+    // the json response is for the mean time
+    res.status(200).json({ accountInfo });
+  } else if (state === process.env.GoogleOAuthStateValueForLogin) {
+    const jwtForLogIn = await googleLogin(code as string);
+    // redirect to a page with the jwtToken injected into it we are returning the token in json for now
+
+    res.status(200).json({ jwtForLogIn });
+  } else {
+    throw new AppError("Data has been tempered with", 400);
+  }
 });

@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.signUp = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const AppError_1 = require("../../domain/errors/AppError");
 const userAccountRepository_1 = require("../../infrastructure/repository/userAccountRepository");
+const bcrypt_1 = require("../../libs/bcrypt");
 // helper methods
 function getRandomCharacters(str, numChars = 2) {
     // Convert the string into an array of characters
@@ -73,7 +73,7 @@ const signUp = (accountInfo) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("Username generated");
     if (accountInfo.password) {
         console.log("Encrypting password..");
-        accountInfo.password = yield bcrypt_1.default.hash(accountInfo.password, Number(process.env.PasswordEncrptRounds));
+        accountInfo.password = yield (0, bcrypt_1.encryptPassword)(accountInfo.password);
         console.log("Password encrypted");
     }
     yield userAccountRepo.createAccount(accountInfo);
